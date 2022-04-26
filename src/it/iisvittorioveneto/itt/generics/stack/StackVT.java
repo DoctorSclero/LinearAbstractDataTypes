@@ -1,11 +1,13 @@
-package it.iisvittorioveneto.itt.nongenerics.observable.stack;
+package it.iisvittorioveneto.itt.generics.stack;
 
 import iis.itt.as2021.ObjectCloner;
-import it.iisvittorioveneto.itt.nongenerics.stack.Stack;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
+
+/**
+ * ! ATTENZIONE !
+ * La classe StackVT ha problemi con i Generics.
+ */
 
 /**
  * A vector based implementation of the
@@ -13,46 +15,28 @@ import java.util.Arrays;
  * @author Pietro Ballarin
  */
 
-public class ObservableStackV implements Stack {
-
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+public class StackVT<T> implements StackT<T> {
 
     public static final int DEFAULT_LENGTH = 100;
     protected Object[]  stack;
     protected int       head;
 
 
-    //**************************************************************************
-    //**                           Constructors                               **
-    //**************************************************************************
-
-
-    /**
-     * This constructor initializes a new
-     * vector based stack with the default
-     * length.
-     */
-    public ObservableStackV() {
+    public StackVT() {
         this(DEFAULT_LENGTH);
     }
 
-    /**
-     * This constructor initializes a new
-     * vector based stack with the specified
-     * length.
-     * @param length The length of the stack
-     */
-    public ObservableStackV(int length) {
+    public StackVT(int length) {
         this.stack = new Object[length];
     }
 
     /**
      * This constructor initializes a new
-     * vector based stack by copying the
-     * content from another stack.
+     * list based stack by copying the
+     * content of another stack.
      * @param stack The stack to copy
      */
-    public ObservableStackV(Stack stack) {
+    public StackVT(StackT<T> stack) {
         Object[] buffer;
 
         buffer = new Object[stack.size()];
@@ -60,45 +44,19 @@ public class ObservableStackV implements Stack {
             buffer[i] = this.pop();
         }
         for (int i = 0; i < stack.size(); i++) {
-            this.push(buffer[i]);
+            this.push((T) buffer[i]);
         }
     }
-
-    //******************************************************************
-    //**                      Observer Methods                        **
-    //******************************************************************
-
-    /**
-     * This method registers a new observer
-     * @param listener The observer to register
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * This method unregisters an observer
-     * @param listener The observer to unregister
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    //******************************************************************
-    //**                      Stack Methods                           **
-    //******************************************************************
 
     /**
      * This method adds an object to the stack.
      * @param obj The object to add to the stack
      */
     @Override
-    public void push(Object obj) {
+    public void push(T obj) {
         if (obj == null) throw new NullPointerException("Object cannot be null");
         if (this.isFull()) throw new IndexOutOfBoundsException("Stack is full");
         this.stack[head++] = ObjectCloner.deepCopy(obj);
-
-        this.propertyChangeSupport.firePropertyChange("push", new Object(), obj);
     }
 
     /**
@@ -106,12 +64,9 @@ public class ObservableStackV implements Stack {
      * @return The removed object
      */
     @Override
-    public Object pop() {
-        Object res = this.top();
+    public T pop() {
+        T res = this.top();
         this.stack[--head] = null;
-
-        this.propertyChangeSupport.firePropertyChange("pop", res, null);
-
         return res;
     }
 
@@ -121,7 +76,6 @@ public class ObservableStackV implements Stack {
     @Override
     public void flush() {
         while (this.head != 0) { this.stack[--head] = null; }
-        this.propertyChangeSupport.firePropertyChange("flush", null, null);
     }
 
     /**
@@ -129,9 +83,9 @@ public class ObservableStackV implements Stack {
      * @return The object in the top of the stack
      */
     @Override
-    public Object top() {
+    public T top() {
         if (this.isEmpty()) throw new IndexOutOfBoundsException("Stack is empty");
-        return ObjectCloner.deepCopy(this.stack[head-1]);
+        return (T) ObjectCloner.deepCopy(this.stack[head-1]);
     }
 
     /**

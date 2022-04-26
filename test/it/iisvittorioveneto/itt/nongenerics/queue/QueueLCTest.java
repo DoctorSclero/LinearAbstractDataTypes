@@ -1,6 +1,6 @@
 package it.iisvittorioveneto.itt.nongenerics.queue;
 
-import it.iisvittorioveneto.itt.nongenerics.observable.queue.QueueLC;
+import it.iisvittorioveneto.itt.nongenerics.observable.queue.ObservableQueueLC;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QueueLCTest {
 
-    private QueueLC queue;
+    private ObservableQueueLC queue;
 
     @BeforeEach
     void setUp() {
-        this.queue = new QueueLC();
+        this.queue = new ObservableQueueLC();
     }
 
     @Test

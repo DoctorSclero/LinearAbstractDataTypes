@@ -2,7 +2,7 @@
   <artifact type="jar" name="LinearAbstractDataTypes:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/LinearAbstractDataTypes</output-path>
     <root id="archive" name="LinearAbstractDataTypes.jar">
-      <element id="module-output" name="LinearAbstractDataTypes" />
+      <element id="module-output" name="AbstractDataTypes" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/ObjectClonerLib.jar" path-in-jar="/" />
     </root>
   </artifact>

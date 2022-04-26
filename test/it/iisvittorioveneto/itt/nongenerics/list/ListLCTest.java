@@ -1,7 +1,5 @@
 package it.iisvittorioveneto.itt.nongenerics.list;
 
-
-import it.iisvittorioveneto.itt.nongenerics.observable.list.ListLC;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

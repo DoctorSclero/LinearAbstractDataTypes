@@ -1,28 +1,18 @@
-package it.iisvittorioveneto.itt.nongenerics.observable.stack;
+package it.iisvittorioveneto.itt.nongenerics.stack;
 
 
-import it.iisvittorioveneto.itt.nongenerics.stack.Stack;
 import it.iisvittorioveneto.itt.nongenerics.utils.Node;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
-public class ObservableStackLC implements Stack {
-
-    PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+public class StackLC implements Stack {
 
     Node head;
     int size;
-
-    //*******************************************************************
-    //**                         Constructors                          **
-    //*******************************************************************
 
     /**
      * This constructor initializes a new
      * list based stack with no elements.
      */
-    public ObservableStackLC() {
+    public StackLC() {
         this.head = null;
         this.size = 0;
     }
@@ -33,7 +23,7 @@ public class ObservableStackLC implements Stack {
      * element
      * @param object The first element
      */
-    public ObservableStackLC(Object object) {
+    public StackLC(Object object) {
         this();
         this.push(object);
     }
@@ -44,7 +34,7 @@ public class ObservableStackLC implements Stack {
      * content of another stack.
      * @param stack The stack to copy
      */
-    public ObservableStackLC(Stack stack) {
+    public StackLC(Stack stack) {
         Object[] buffer;
 
         buffer = new Object[stack.size()];
@@ -55,31 +45,6 @@ public class ObservableStackLC implements Stack {
             this.push(buffer[i]);
         }
     }
-
-    //******************************************************************
-    //**                      Observer Methods                        **
-    //******************************************************************
-
-    /**
-     * This method registers a new observer
-     * @param listener The observer to register
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * This method unregisters an observer
-     * @param listener The observer to unregister
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    //******************************************************************
-    //**                      Stack Methods                           **
-    //******************************************************************
-
 
     /**
      * This method returns the size of the stack

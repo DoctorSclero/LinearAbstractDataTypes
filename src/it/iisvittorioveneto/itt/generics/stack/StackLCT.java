@@ -1,28 +1,20 @@
-package it.iisvittorioveneto.itt.nongenerics.observable.stack;
+package it.iisvittorioveneto.itt.generics.stack;
 
 
-import it.iisvittorioveneto.itt.nongenerics.stack.Stack;
-import it.iisvittorioveneto.itt.nongenerics.utils.Node;
+import it.iisvittorioveneto.itt.generics.utils.TemplateNode;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
-public class ObservableStackLC implements Stack {
+public class StackLCT<T> implements StackT<T> {
 
-    PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-    Node head;
+    TemplateNode<T> head;
     int size;
-
-    //*******************************************************************
-    //**                         Constructors                          **
-    //*******************************************************************
 
     /**
      * This constructor initializes a new
      * list based stack with no elements.
      */
-    public ObservableStackLC() {
+    public StackLCT() {
         this.head = null;
         this.size = 0;
     }
@@ -33,7 +25,7 @@ public class ObservableStackLC implements Stack {
      * element
      * @param object The first element
      */
-    public ObservableStackLC(Object object) {
+    public StackLCT(T object) {
         this();
         this.push(object);
     }
@@ -44,7 +36,7 @@ public class ObservableStackLC implements Stack {
      * content of another stack.
      * @param stack The stack to copy
      */
-    public ObservableStackLC(Stack stack) {
+    public StackLCT(StackT<T> stack) {
         Object[] buffer;
 
         buffer = new Object[stack.size()];
@@ -52,34 +44,9 @@ public class ObservableStackLC implements Stack {
             buffer[i] = this.pop();
         }
         for (int i = 0; i < stack.size(); i++) {
-            this.push(buffer[i]);
+            this.push((T) buffer[i]);
         }
     }
-
-    //******************************************************************
-    //**                      Observer Methods                        **
-    //******************************************************************
-
-    /**
-     * This method registers a new observer
-     * @param listener The observer to register
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * This method unregisters an observer
-     * @param listener The observer to unregister
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    //******************************************************************
-    //**                      Stack Methods                           **
-    //******************************************************************
-
 
     /**
      * This method returns the size of the stack
@@ -106,9 +73,10 @@ public class ObservableStackLC implements Stack {
      * @param obj The object to add to the stack
      */
     @Override
-    public void push(Object obj) {
-        this.head = new Node(obj, this.head);
+    public void push(T obj) {
+        this.head = new TemplateNode<>(obj, this.head);
         this.size++;
+        ArrayList<Object> buffer = new ArrayList<>();
     }
 
     /**
@@ -117,10 +85,10 @@ public class ObservableStackLC implements Stack {
      * @return The removed object
      */
     @Override
-    public Object pop() {
+    public T pop() {
         if (this.isEmpty()) throw new IndexOutOfBoundsException();
 
-        Object res = this.head.getObject();
+        T res = this.head.getObject();
         this.head = this.head.getNext();
         this.size--;
         return res;
@@ -132,7 +100,7 @@ public class ObservableStackLC implements Stack {
      * @return The object in the top of the stack
      */
     @Override
-    public Object top() {
+    public T top() {
         return this.head.getObject();
     }
 

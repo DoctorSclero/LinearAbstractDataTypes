@@ -1,7 +1,6 @@
-package it.iisvittorioveneto.itt.nongenerics.observable.stack;
+package it.iisvittorioveneto.itt.nongenerics.stack;
 
 import iis.itt.as2021.ObjectCloner;
-import it.iisvittorioveneto.itt.nongenerics.stack.Stack;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -13,26 +12,23 @@ import java.util.Arrays;
  * @author Pietro Ballarin
  */
 
-public class ObservableStackV implements Stack {
+public class StackV implements Stack {
 
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     public static final int DEFAULT_LENGTH = 100;
     protected Object[]  stack;
     protected int       head;
 
-
-    //**************************************************************************
-    //**                           Constructors                               **
-    //**************************************************************************
-
+    //****************************************************
+    //**                   Constructors                 **
+    //****************************************************
 
     /**
      * This constructor initializes a new
      * vector based stack with the default
      * length.
      */
-    public ObservableStackV() {
+    public StackV() {
         this(DEFAULT_LENGTH);
     }
 
@@ -42,17 +38,17 @@ public class ObservableStackV implements Stack {
      * length.
      * @param length The length of the stack
      */
-    public ObservableStackV(int length) {
+    public StackV(int length) {
         this.stack = new Object[length];
     }
 
     /**
      * This constructor initializes a new
-     * vector based stack by copying the
-     * content from another stack.
+     * list based stack by copying the
+     * content of another stack.
      * @param stack The stack to copy
      */
-    public ObservableStackV(Stack stack) {
+    public StackV(Stack stack) {
         Object[] buffer;
 
         buffer = new Object[stack.size()];
@@ -64,29 +60,9 @@ public class ObservableStackV implements Stack {
         }
     }
 
-    //******************************************************************
-    //**                      Observer Methods                        **
-    //******************************************************************
-
-    /**
-     * This method registers a new observer
-     * @param listener The observer to register
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * This method unregisters an observer
-     * @param listener The observer to unregister
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    //******************************************************************
-    //**                      Stack Methods                           **
-    //******************************************************************
+    //******************************************************
+    //**            Stack Methods Implementation          **
+    //******************************************************
 
     /**
      * This method adds an object to the stack.
@@ -97,8 +73,6 @@ public class ObservableStackV implements Stack {
         if (obj == null) throw new NullPointerException("Object cannot be null");
         if (this.isFull()) throw new IndexOutOfBoundsException("Stack is full");
         this.stack[head++] = ObjectCloner.deepCopy(obj);
-
-        this.propertyChangeSupport.firePropertyChange("push", new Object(), obj);
     }
 
     /**
@@ -109,9 +83,6 @@ public class ObservableStackV implements Stack {
     public Object pop() {
         Object res = this.top();
         this.stack[--head] = null;
-
-        this.propertyChangeSupport.firePropertyChange("pop", res, null);
-
         return res;
     }
 
@@ -121,7 +92,6 @@ public class ObservableStackV implements Stack {
     @Override
     public void flush() {
         while (this.head != 0) { this.stack[--head] = null; }
-        this.propertyChangeSupport.firePropertyChange("flush", null, null);
     }
 
     /**

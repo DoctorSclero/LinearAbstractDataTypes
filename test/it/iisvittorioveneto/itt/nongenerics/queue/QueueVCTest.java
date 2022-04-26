@@ -1,6 +1,6 @@
 package it.iisvittorioveneto.itt.nongenerics.queue;
 
-import it.iisvittorioveneto.itt.nongenerics.observable.queue.QueueVC;
+import it.iisvittorioveneto.itt.nongenerics.observable.queue.ObservableQueueVC;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QueueVCTest {
 
-    private QueueVC queue;
+    private ObservableQueueVC queue;
 
     @BeforeEach
     void setUp() {
-        this.queue = new QueueVC(6);
+        this.queue = new ObservableQueueVC(6);
 
         // Applying offset
         for (int i = 0; i < 3; i++) {
