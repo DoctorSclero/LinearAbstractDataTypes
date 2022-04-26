@@ -1,17 +1,27 @@
 package it.iisvittorioveneto.itt.generics.observable.queue;
 
 import iis.itt.as2021.ObjectCloner;
+import it.iisvittorioveneto.itt.generics.queue.QueueT;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
-public class QueueVCT<T> extends QueueVT<T> {
+public class ObservableQueueVCT<T> extends ObservableQueueVT<T> {
+
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
     protected int head;
+
+    //**************************************************************************
+    //**                           Constructors                               **
+    //**************************************************************************
 
     /**
      * This constructor initializes a circular vector
      * based queue with default max length
      */
-    public QueueVCT() {
+    public ObservableQueueVCT() {
         this(DEFAULT_LENGTH);
     }
 
@@ -20,7 +30,7 @@ public class QueueVCT<T> extends QueueVT<T> {
      * based queue with the specified max length.
      * @param length The max length of the queue
      */
-    public QueueVCT(int length) {
+    public ObservableQueueVCT(int length) {
         super(length+1);
         this.head = 0;
     }
@@ -30,27 +40,51 @@ public class QueueVCT<T> extends QueueVT<T> {
      * by copying the content from another queue
      * @param queue The queue to copy
      */
-    public QueueVCT(QueueT<T> queue) {
+    public ObservableQueueVCT(QueueT<T> queue) {
         super(queue.size()); // If queue is null NullPointerException is thrown automatically
 
         queue = (QueueT<T>) ObjectCloner.deepCopy(queue);
 
-        if (queue instanceof QueueVCT queueVC) {
+        if (queue instanceof ObservableQueueVCT queueVC) {
             for (int i = 0; i < queue.size(); i++) {
                 this.enQueue(queueVC.deQueue());
             }
         }
-        if (queue instanceof QueueVT queueV) {
+        if (queue instanceof ObservableQueueVT queueV) {
             for (int i = 0; i < queue.size(); i++) {
                 this.enQueue(queueV.deQueue());
             }
         }
-        if (queue instanceof QueueLCT queueLC) {
+        if (queue instanceof ObservableQueueLCT queueLC) {
             for (int i = 0; i < queue.size(); i++) {
                 this.enQueue(queueLC.deQueue());
             }
         }
     }
+
+    //**************************************************************************
+    //**                          Observer Methods                            **
+    //**************************************************************************
+
+    /**
+     * This method registers a new observer to the list.
+     * @param listener the observer to be registered
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * This method removes an observer from the list.
+     * @param listener the observer to be removed
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    //**************************************************************************
+    //**                            List Methods                              **
+    //**************************************************************************
 
     /**
      * This method clears out the queue by removing all the elements
@@ -84,7 +118,7 @@ public class QueueVCT<T> extends QueueVT<T> {
     @Override
     public T deQueue() {
         T res = this.read();
-        this.head = QueueVCT.moduleIncrement(this.head, this.queue.length);
+        this.head = ObservableQueueVCT.moduleIncrement(this.head, this.queue.length);
         return res;
     }
 
@@ -116,7 +150,7 @@ public class QueueVCT<T> extends QueueVT<T> {
      */
     @Override
     public boolean isFull() {
-        return QueueVCT.moduleIncrement(this.tail, this.queue.length) == this.head;
+        return ObservableQueueVCT.moduleIncrement(this.tail, this.queue.length) == this.head;
     }
 
     /**

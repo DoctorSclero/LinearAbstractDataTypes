@@ -15,18 +15,18 @@ import java.util.Arrays;
  * @author Pietro Ballarin
  */
 
-public class StackVT<T> implements StackT<T> {
+public class ObservableStackVT<T> implements StackT<T> {
 
     public static final int DEFAULT_LENGTH = 100;
     protected Object[]  stack;
     protected int       head;
 
 
-    public StackVT() {
+    public ObservableStackVT() {
         this(DEFAULT_LENGTH);
     }
 
-    public StackVT(int length) {
+    public ObservableStackVT(int length) {
         this.stack = new Object[length];
     }
 
@@ -36,7 +36,7 @@ public class StackVT<T> implements StackT<T> {
      * content of another stack.
      * @param stack The stack to copy
      */
-    public StackVT(StackT<T> stack) {
+    public ObservableStackVT(StackT<T> stack) {
         Object[] buffer;
 
         buffer = new Object[stack.size()];

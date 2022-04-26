@@ -2,10 +2,11 @@ package it.iisvittorioveneto.itt.generics.observable.queue;
 
 
 import iis.itt.as2021.ObjectCloner;
+import it.iisvittorioveneto.itt.generics.queue.QueueT;
 
 import java.util.Arrays;
 
-public class QueueVT<T> implements QueueT<T> {
+public class ObservableQueueVT<T> implements QueueT<T> {
 
     public static final int DEFAULT_LENGTH = 100;
 
@@ -16,7 +17,7 @@ public class QueueVT<T> implements QueueT<T> {
      * This constructor initializes a queue
      * with default length
      */
-    public QueueVT() {
+    public ObservableQueueVT() {
         this.queue = new Object[DEFAULT_LENGTH];
     }
 
@@ -25,7 +26,7 @@ public class QueueVT<T> implements QueueT<T> {
      * with the max length passed as parameter
      * @param length Max length of the queue
      */
-    public QueueVT(int length) {
+    public ObservableQueueVT(int length) {
         this.queue = new Object[length];
         this.tail = 0;
     }
@@ -35,22 +36,22 @@ public class QueueVT<T> implements QueueT<T> {
      * from another queue by copying its content
      * @param queue The queue to copy
      */
-    public QueueVT(QueueT<T> queue) {
+    public ObservableQueueVT(QueueT<T> queue) {
         if (queue == null) throw new NullPointerException("Queue cannot be null");
 
         queue = (QueueT<T>) ObjectCloner.deepCopy(queue);
 
-        if (queue instanceof QueueVCT<T> queueVCT) {
+        if (queue instanceof ObservableQueueVCT<T> queueVCT) {
             for (int i = 0; i < queue.size(); i++) {
                 this.enQueue(queueVCT.deQueue());
             }
         }
-        if (queue instanceof QueueVT<T> queueVT) {
+        if (queue instanceof ObservableQueueVT<T> queueVT) {
             for (int i = 0; i < queue.size(); i++) {
                 this.enQueue(queueVT.deQueue());
             }
         }
-        if (queue instanceof QueueLCT<T> queueLCT) {
+        if (queue instanceof ObservableQueueLCT<T> queueLCT) {
             for (int i = 0; i < queue.size(); i++) {
                 this.enQueue(queueLCT.deQueue());
             }

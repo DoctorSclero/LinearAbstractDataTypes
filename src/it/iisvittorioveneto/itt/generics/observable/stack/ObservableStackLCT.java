@@ -5,7 +5,7 @@ import it.iisvittorioveneto.itt.generics.observable.utils.TemplateNode;
 
 import java.util.ArrayList;
 
-public class StackLCT<T> implements StackT<T> {
+public class ObservableStackLCT<T> implements StackT<T> {
 
     TemplateNode<T> head;
     int size;
@@ -14,7 +14,7 @@ public class StackLCT<T> implements StackT<T> {
      * This constructor initializes a new
      * list based stack with no elements.
      */
-    public StackLCT() {
+    public ObservableStackLCT() {
         this.head = null;
         this.size = 0;
     }
@@ -25,7 +25,7 @@ public class StackLCT<T> implements StackT<T> {
      * element
      * @param object The first element
      */
-    public StackLCT(T object) {
+    public ObservableStackLCT(T object) {
         this();
         this.push(object);
     }
@@ -36,7 +36,7 @@ public class StackLCT<T> implements StackT<T> {
      * content of another stack.
      * @param stack The stack to copy
      */
-    public StackLCT(StackT<T> stack) {
+    public ObservableStackLCT(StackT<T> stack) {
         Object[] buffer;
 
         buffer = new Object[stack.size()];

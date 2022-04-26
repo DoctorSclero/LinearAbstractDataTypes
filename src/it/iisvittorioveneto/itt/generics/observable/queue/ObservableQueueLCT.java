@@ -1,7 +1,11 @@
 package it.iisvittorioveneto.itt.generics.observable.queue;
 
 import iis.itt.as2021.ObjectCloner;
-import it.iisvittorioveneto.itt.generics.observable.utils.TemplateNode;
+import it.iisvittorioveneto.itt.generics.queue.QueueT;
+import it.iisvittorioveneto.itt.generics.utils.TemplateNode;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * This class represents a list based Queue
@@ -9,17 +13,23 @@ import it.iisvittorioveneto.itt.generics.observable.utils.TemplateNode;
  *
  * @author pietro.ballarin
  */
-public class QueueLCT<T> implements QueueT<T> {
+public class ObservableQueueLCT<T> implements QueueT<T> {
+
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     protected TemplateNode<T> head;
     protected TemplateNode<T> tail;
     protected int  size;
 
+    //**************************************************************************
+    //**                           Constructors                               **
+    //**************************************************************************
+
     /**
      * This constructor initializes a new list based Queue
      * with no nodes.
      */
-    public QueueLCT() {
+    public ObservableQueueLCT() {
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -30,7 +40,7 @@ public class QueueLCT<T> implements QueueT<T> {
      * with a new node with $object content
      * @param object The first node content
      */
-    public QueueLCT(T object) {
+    public ObservableQueueLCT(T object) {
         this();
         this.enQueue(object);
     }
@@ -40,27 +50,51 @@ public class QueueLCT<T> implements QueueT<T> {
      * from another queue by copying its content
      * @param queue The queue to copy
      */
-    public QueueLCT(QueueT<T> queue) {
+    public ObservableQueueLCT(QueueT<T> queue) {
         if (queue == null) throw new NullPointerException("Queue cannot be null");
 
         queue = (QueueT<T>) ObjectCloner.deepCopy(queue);
 
-        if (queue instanceof QueueVCT<T> queueVCT) {
+        if (queue instanceof ObservableQueueVCT queueVCT) {
             for (int i = 0; i < queue.size(); i++) {
-                this.enQueue(queueVCT.deQueue());
+                this.enQueue((T) queueVCT.deQueue());
             }
         }
-        if (queue instanceof QueueVT<T> queueVT) {
+        if (queue instanceof ObservableQueueVT queueVT) {
             for (int i = 0; i < queue.size(); i++) {
-                this.enQueue(queueVT.deQueue());
+                this.enQueue((T) queueVT.deQueue());
             }
         }
-        if (queue instanceof QueueLCT<T> queueLCT) {
+        if (queue instanceof ObservableQueueLCT queueLCT) {
             for (int i = 0; i < queue.size(); i++) {
-                this.enQueue(queueLCT.deQueue());
+                this.enQueue((T) queueLCT.deQueue());
             }
         }
     }
+
+    //**************************************************************************
+    //**                          Observer Methods                            **
+    //**************************************************************************
+
+    /**
+     * This method registers a new observer to the list.
+     * @param listener the observer to be registered
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * This method removes an observer from the list.
+     * @param listener the observer to be removed
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    //**************************************************************************
+    //**                            List Methods                              **
+    //**************************************************************************
 
     /**
      * This method clears out the queue by removing all the elements

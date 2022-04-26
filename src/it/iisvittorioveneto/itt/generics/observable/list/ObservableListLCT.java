@@ -1,21 +1,55 @@
 package it.iisvittorioveneto.itt.generics.observable.list;
 
-import it.iisvittorioveneto.itt.generics.observable.utils.TemplateNode;
+import it.iisvittorioveneto.itt.generics.list.ListT;
+import it.iisvittorioveneto.itt.generics.utils.TemplateNode;
 
-public class ListLCT<T> implements ListT<T> {
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+public class ObservableListLCT<T> implements ListT<T> {
+
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     protected TemplateNode<T> head;
     protected TemplateNode<T> cursor;
 
-    public ListLCT() {
+    //**************************************************************************
+    //**                           Constructors                               **
+    //**************************************************************************
+
+    public ObservableListLCT() {
         head = new TemplateNode<T>((T) "First Handle", null);
         cursor = head;
     }
 
-    public ListLCT(T object) {
+    public ObservableListLCT(T object) {
         this();
         this.insert(object);
     }
+
+    //**************************************************************************
+    //**                          Observer Methods                            **
+    //**************************************************************************
+
+    /**
+     * This method registers a new observer to the list.
+     * @param listener the observer to be registered
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * This method removes an observer from the list.
+     * @param listener the observer to be removed
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    //**************************************************************************
+    //**                            List Methods                              **
+    //**************************************************************************
 
     /**
      * This method clears out the list by removing all the elements
