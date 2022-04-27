@@ -1,12 +1,15 @@
 package it.iisvittorioveneto.itt.generics.observable.stack;
 
 import iis.itt.as2021.ObjectCloner;
+import it.iisvittorioveneto.itt.generics.stack.StackT;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
 /**
  * ! ATTENZIONE !
- * La classe StackVT ha problemi con i Generics.
+ * La classe StackVT potrebbe avere problemi con i Generics.
  */
 
 /**
@@ -17,15 +20,29 @@ import java.util.Arrays;
 
 public class ObservableStackVT<T> implements StackT<T> {
 
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
     public static final int DEFAULT_LENGTH = 100;
     protected Object[]  stack;
     protected int       head;
 
+    //**************************************************************************
+    //**                           Constructors                               **
+    //**************************************************************************
 
+    /**
+     * This constructor initializes a new list based stack
+     */
     public ObservableStackVT() {
         this(DEFAULT_LENGTH);
     }
 
+
+    /**
+     * This constructor initializes a new list based stack
+     * of a given size
+     * @param length the length of the stack
+     */
     public ObservableStackVT(int length) {
         this.stack = new Object[length];
     }
@@ -47,6 +64,30 @@ public class ObservableStackVT<T> implements StackT<T> {
             this.push((T) buffer[i]);
         }
     }
+
+    //**************************************************************************
+    //**                          Observer Methods                            **
+    //**************************************************************************
+
+    /**
+     * This method registers a new observer to the list.
+     * @param listener the observer to be registered
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * This method removes an observer from the list.
+     * @param listener the observer to be removed
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    //**************************************************************************
+    //**                            List Methods                              **
+    //**************************************************************************
 
     /**
      * This method adds an object to the stack.
